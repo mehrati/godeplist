@@ -20,13 +20,12 @@ func main() {
 }
 
 func TrimImport(str string) string {
-	
 	if strings.Contains(str, "\"") {
 		s := ""
 		s = strings.TrimLeft(str, str[:strings.Index(str, "\"")+1])
 		s = strings.TrimRight(s, str[strings.LastIndex(str, "\""):])
 		return s
-	}else{
+	} else {
 		return str
 	}
 }
@@ -143,5 +142,3 @@ func ShowDeps(deps []string) {
 		fmt.Println(d)
 	}
 }
-
-
