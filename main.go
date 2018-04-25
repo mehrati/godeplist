@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"sort"
 	"strings"
 
@@ -15,19 +16,17 @@ import (
 func main() {
 	dirs := GetAllDirs()
 	files := GetAllFiles(dirs)
+	err := ExecGoImports(files)
+	if err != nil {
+		fmt.Println(err)
+	}
 	deps := GetDeps(files)
 	ShowDeps(deps)
 }
+// TODO
+func GetNonStdDeps(deps []string) []string{
 
-func TrimImport(str string) string {
-	if strings.Contains(str, "\"") {
-		s := ""
-		s = strings.TrimLeft(str, str[:strings.Index(str, "\"")+1])
-		s = strings.TrimRight(s, str[strings.LastIndex(str, "\""):])
-		return s
-	} else {
-		return str
-	}
+	return nil
 }
 
 func GetDeps(files []string) []string {
@@ -53,6 +52,7 @@ func GetDeps(files []string) []string {
 				}
 			} else if strings.HasPrefix(t, "import") {
 				RES.Add(TrimImport(t))
+				break br
 			}
 		}
 		if err := scanner.Err(); err != nil {
@@ -140,5 +140,30 @@ func GetAllFiles(dirs []string) []string {
 func ShowDeps(deps []string) {
 	for _, d := range deps {
 		fmt.Println(d)
+	}
+}
+
+func ExecGoImports(files []string) error {
+	path, err := exec.LookPath("goimports")
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		err = exec.Command(path, "-w", f).Run()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func TrimImport(str string) string {
+	if strings.Contains(str, "\"") {
+		s := ""
+		s = strings.TrimLeft(str, str[:strings.Index(str, "\"")+1])
+		s = strings.TrimRight(s, str[strings.LastIndex(str, "\""):])
+		return s
+	} else {
+		return str
 	}
 }
