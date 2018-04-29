@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"go/build"
-	"gopkg.in/fatih/set.v0"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"gopkg.in/fatih/set.v0"
 )
 
 func main() {
