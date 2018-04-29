@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"go/build"
+	"gopkg.in/fatih/set.v0"
 	"io/ioutil"
 	"log"
 	"os"
-	"gopkg.in/fatih/set.v0"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 	dirs := GetAllDirs()
 	for _, d := range dirs {
 		imports, _ := GetImport(d)
-		for _,i := range imports {
+		for _, i := range imports {
 			s.Add(i)
 		}
 	}
@@ -78,7 +78,7 @@ func GetListDir(dir string) ([]string, error) {
 }
 
 func ShowImports(imp []interface{}) {
-	for _, d := range imp {
-		fmt.Println(d)
+	for _, i := range imp {
+		fmt.Println(i)
 	}
 }
