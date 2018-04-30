@@ -34,7 +34,6 @@ func GetImport(path string) ([]string, error) {
 
 // TODO
 func GetNonStdDeps(deps []string) []string {
-
 	return nil
 }
 
